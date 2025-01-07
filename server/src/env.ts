@@ -6,6 +6,11 @@ const envSchema = z.object({
 	MONGO_URI: z.string().nonempty("MONGO_URI is required."),
 	SALT: z.coerce.number().default(10),
 	JWT_SECRET: z.string().nonempty("JWT_SECRETE cant be empty"),
+	STMP_MAILTRAP: z.string().nonempty("STMP cant be empty"),
+	PORT_STMP: z.coerce.number().nonnegative("PORT STMP cant be negative"),
+	MAILTRAP_USER: z.string().nonempty("MAILTRAP User cant be empty"),
+	MAILTRAP_PASSWORD: z.string().nonempty("MAILTRAP Password cant be empty"),
+	BACKEND_URL: z.string().url().nonempty("HOSTED URL cant be empty"),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);

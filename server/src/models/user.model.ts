@@ -2,6 +2,9 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
 	{
+		avatar: {
+			type: String,
+		},
 		email: {
 			type: String,
 			required: true,
@@ -11,7 +14,7 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			enum: ["admin", "user", "dev"],
 			required: true,
-			defualt: "User",
+			defualt: "user",
 		},
 		password: {
 			type: String,
@@ -35,6 +38,19 @@ const userSchema = new mongoose.Schema(
 				ref: "Comment",
 			},
 		],
+		verificationCode: {
+			type: String,
+			required: true,
+		},
+		codeExpiry: {
+			type: Number,
+			required: true,
+		},
+		verified: {
+			type: Boolean,
+			required: true,
+			default: false,
+		},
 	},
 	{ timestamps: true },
 );

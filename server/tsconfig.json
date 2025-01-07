@@ -1,28 +1,28 @@
 {
-  "compilerOptions": {
-    "esModuleInterop": true,
-    "rootDir": "./src",
-    "skipLibCheck": true,
-    "target": "ES2022",
-    "module": "NodeNext",
-    "allowJs": true,
-    "isolatedModules": true,
-    "sourceMap": true,
-    "baseUrl": ".",
+	"compilerOptions": {
+		"esModuleInterop": true,
+		"rootDir": "./src",
+		"skipLibCheck": true,
+		"target": "ES2022",
+		"module": "NodeNext",
+		"allowJs": true,
+		"isolatedModules": true,
+		"sourceMap": true,
+		"baseUrl": ".",
 
-    "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
+		"strict": true,
+		"noUncheckedIndexedAccess": true,
+		"noImplicitOverride": true,
 
-    "outDir": "./dist",
-    "declaration": true,
-    "declarationMap": true,
+		"outDir": "./dist",
+		"declaration": true,
+		"declarationMap": true,
 
-    "lib": ["ES2022"],
+		"lib": ["ES2022"],
 
-    "resolveJsonModule": true,
-    "typeRoots": ["src/types/*"]
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+		"resolveJsonModule": true,
+		"typeRoots": ["src/types/*"]
+	},
+	"include": ["src/**/*"],
+	"exclude": ["node_modules"]
 }
