@@ -14,6 +14,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
 	};
 	const start = (Number.parseInt(page) - 1) * Number.parseInt(limit);
 	try {
+		// return errorHandler(res, 400, null, "test", "BAD_REQUEST");
 		const posts = await Post.find(
 			{},
 			{
@@ -27,6 +28,12 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
 				tags: true,
 			},
 		)
+			.populate({
+				path: "author",
+				select: {
+					email: true,
+				},
+			})
 			.limit(Number.parseInt(limit))
 			.skip(start);
 		if (posts && posts.length > 0)
@@ -79,17 +86,24 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
 		//   content: "akjsdn",
 		//   postId: "67773043ceaa4af5da05539c",
 		// }).save();
-		const post = await Post.findById(id).populate({
-			path: "comments",
-			populate: {
+		const post = await Post.findById(id)
+			.populate({
 				path: "author",
-				select: "email",
-			},
-			options: {
-				sort: { createdAt: -1 },
-				limit: 20,
-			},
-		});
+				select: {
+					email: true,
+				},
+			})
+			.populate({
+				path: "comments",
+				populate: {
+					path: "author",
+					select: "email",
+				},
+				options: {
+					sort: { createdAt: -1 },
+					limit: 20,
+				},
+			});
 		if (post) return successHandler(res, 200, post, "post fetched successfully");
 		return errorHandler(res, 404, [], "post with given id not found", "NOT_FOUND");
 	} catch (error) {

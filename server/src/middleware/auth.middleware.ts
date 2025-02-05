@@ -5,6 +5,7 @@ import { env } from "../env";
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
 	try {
+		console.log(req.cookies);
 		const token: string = req.cookies.ACCESS_TOKEN;
 		if (!token) return errorHandler(res, 400, null, "NO TOKEN", "BAD_REQUEST");
 		const authToken = token.split(" ")[1];

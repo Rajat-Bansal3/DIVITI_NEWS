@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 
 const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const rawUser = localStorage.getItem("user");
+  const user = rawUser ? JSON.parse(rawUser) : null;
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen((prev) => !prev);
@@ -45,14 +47,17 @@ const Header: React.FC = () => {
           </Link>
         </nav>
 
-        {/* Login Button */}
         <div className='hidden sm:flex items-center'>
-          <Link
-            to='/login'
-            className='bg-red-700 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded transition'
-          >
-            Login
-          </Link>
+          {user ? (
+            <>hello {user?.email.split("@")[0]}</>
+          ) : (
+            <Link
+              to='/signin'
+              className='bg-red-700 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded transition'
+            >
+              Login
+            </Link>
+          )}
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -114,13 +119,18 @@ const Header: React.FC = () => {
           >
             Contact Us
           </Link>
-          <Link
-            to='/login'
-            className=' bg-red-700 hover:bg-red-600 text-white font-medium px-4 py-2 rounded transition flex justify-center items-center'
-            onClick={toggleMobileMenu}
-          >
-            Login
-          </Link>
+          {user ? (
+            <div className='flex items-center justify-center font-semibold text-xl'>
+              hello {user?.email.split("@")[0]}
+            </div>
+          ) : (
+            <Link
+              to='/signin'
+              className='bg-red-700 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded transition'
+            >
+              Login
+            </Link>
+          )}
         </div>
       </div>
     </header>

@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
-import { useRegister } from "@/api/auth_api";
+import { useLogin, useRegister } from "@/api/auth_api";
 
 const FormSchema = z.object({
   email: z.string().email({
@@ -25,13 +25,25 @@ const FormSchema = z.object({
   }),
 });
 
-interface authprops {
+interface AuthProps {
   signup: boolean;
 }
 
-export function AuthForm({ signup }: authprops) {
-  const { error, isError, isLoading, register } = useRegister();
-  //   const { error, isError, isLoading, register } = useLogin();
+export function AuthForm({ signup }: AuthProps) {
+  const {
+    error: registerError,
+    isError: isRegisterError,
+    isLoading: isRegisterLoading,
+    register,
+  } = useRegister();
+
+  const {
+    error: loginError,
+    isError: isLoginError,
+    isLoading: isLoginLoading,
+    signin,
+  } = useLogin();
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -41,10 +53,17 @@ export function AuthForm({ signup }: authprops) {
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    if (signup) await register(data);
-    // else Login({ email: data.email, password: data.password });
+    if (signup) {
+      await register(data);
+    } else {
+      await signin({ email: data.email, password: data.password });
+    }
     form.reset();
   }
+
+  const isLoading = signup ? isRegisterLoading : isLoginLoading;
+  const isError = signup ? isRegisterError : isLoginError;
+  const error = signup ? registerError : loginError;
 
   return (
     <Form {...form}>
@@ -100,13 +119,20 @@ export function AuthForm({ signup }: authprops) {
           className='w-full py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none disabled:opacity-50'
           disabled={isLoading}
         >
-          {isLoading ? "Registering..." : "Register"}
+          {isLoading
+            ? signup
+              ? "Registering..."
+              : "Signing in..."
+            : signup
+            ? "Register"
+            : "Sign In"}
         </Button>
+
         {signup ? (
           <span className='text-sm text-gray-600'>
             Already have an account?{" "}
             <Link
-              to='/login'
+              to='/signin'
               className='text-blue-500 hover:text-blue-700 font-medium'
             >
               LOGIN NOW!
@@ -123,6 +149,7 @@ export function AuthForm({ signup }: authprops) {
             </Link>
           </span>
         )}
+
         {isError && error && (
           <div className='text-red-500 mt-4 text-center'>{error.message}</div>
         )}
